@@ -1081,6 +1081,7 @@ dependencies = [
  "hashbrown 0.13.2",
  "helix-loader",
  "imara-diff",
+ "indoc 1.0.9",
  "log",
  "once_cell",
  "quickcheck",
@@ -1176,7 +1177,7 @@ dependencies = [
  "helix-vcs",
  "helix-view",
  "ignore",
- "indoc",
+ "indoc 2.0.0",
  "log",
  "once_cell",
  "pulldown-cmark",
@@ -1345,6 +1346,12 @@ dependencies = [
  "autocfg",
  "hashbrown 0.12.3",
 ]
+
+[[package]]
+name = "indoc"
+version = "1.0.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bfa799dd5ed20a7e349f3b4639aa80d74549c81716d9ec4f994c9b5815598306"
 
 [[package]]
 name = "indoc"
