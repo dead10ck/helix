@@ -907,8 +907,12 @@ impl EditorView {
 
                                 let tx = Transaction::change(
                                     doc.text(),
-                                    compl.changes.iter().cloned().map(|(start, end, t)| {
-                                        (shift_position(start), shift_position(end), t)
+                                    compl.changes.iter().cloned().map(|change| {
+                                        (
+                                            shift_position(change.from),
+                                            shift_position(change.to),
+                                            change.replacement,
+                                        )
                                     }),
                                 );
                                 doc.apply(&tx, view.id);

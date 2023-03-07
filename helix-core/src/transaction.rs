@@ -1,6 +1,7 @@
 use crate::{Range, Rope, Selection, Tendril};
 use std::borrow::Cow;
 
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Change {
     pub from: usize,
     pub to: usize,
@@ -594,7 +595,7 @@ impl<'a> Iterator for ChangeIterator<'a> {
                 Delete(len) => {
                     let start = self.pos;
                     self.pos += len;
-                    return Some((start, self.pos, None));
+                    return Some((start, self.pos, None, None).into());
                 }
                 Insert(s) => {
                     let start = self.pos;
@@ -603,9 +604,9 @@ impl<'a> Iterator for ChangeIterator<'a> {
                         self.iter.next();
 
                         self.pos += len;
-                        return Some((start, self.pos, Some(s.clone())));
+                        return Some((start, self.pos, Some(s.clone()), None).into());
                     } else {
-                        return Some((start, start, Some(s.clone())));
+                        return Some((start, start, Some(s.clone()), None).into());
                     }
                 }
             }
@@ -736,7 +737,11 @@ mod test {
     #[test]
     fn changes_iter() {
         let doc = Rope::from("hello world!\ntest 123");
-        let changes = vec![(6, 11, Some("void".into())), (12, 17, None)];
+        let changes = vec![
+            (6, 11, Some("void".into()), None).into(),
+            (12, 17, None, None).into(),
+        ];
+
         let transaction = Transaction::change(&doc, changes.clone().into_iter());
         assert_eq!(transaction.changes_iter().collect::<Vec<_>>(), changes);
     }

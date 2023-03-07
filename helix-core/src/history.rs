@@ -159,24 +159,28 @@ impl History {
         if self.current == 0 {
             return None;
         }
+
         let current_revision = &self.revisions[self.current];
         let primary_selection = current_revision
             .inversion
             .selection()
             .expect("inversion always contains a selection")
             .primary();
-        let (_from, to, _fragment) = current_revision
+
+        let change = current_revision
             .transaction
             .changes_iter()
             // find a change that matches the primary selection
-            .find(|(from, to, _fragment)| Range::new(*from, *to).overlaps(&primary_selection))
+            .find(|change| Range::new(change.from, change.to).overlaps(&primary_selection))
             // or use the first change
             .or_else(|| current_revision.transaction.changes_iter().next())
             .unwrap();
+
         let pos = current_revision
             .transaction
             .changes()
-            .map_pos(to, Assoc::After);
+            .map_pos(change.to, Assoc::After);
+
         Some(pos)
     }
 
@@ -470,13 +474,11 @@ mod test {
             }
         }
 
-        fn commit_change(
-            history: &mut History,
-            state: &mut State,
-            change: crate::transaction::Change,
-            instant: Instant,
-        ) {
-            let txn = Transaction::change(&state.doc, vec![change].into_iter());
+        fn commit_change<C>(history: &mut History, state: &mut State, change: C, instant: Instant)
+        where
+            C: Into<crate::transaction::Change>,
+        {
+            let txn = Transaction::change(&state.doc, vec![change.into()].into_iter());
             history.commit_revision_at_timestamp(&txn, state, instant);
             txn.apply(&mut state.doc);
         }

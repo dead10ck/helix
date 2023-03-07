@@ -206,7 +206,7 @@ impl Completion {
             fn completion_changes(transaction: &Transaction, trigger_offset: usize) -> Vec<Change> {
                 transaction
                     .changes_iter()
-                    .filter(|(start, end, _)| (*start..=*end).contains(&trigger_offset))
+                    .filter(|change| (change.from..=change.to).contains(&trigger_offset))
                     .collect()
             }
 

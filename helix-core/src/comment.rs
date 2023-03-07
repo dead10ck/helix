@@ -84,10 +84,10 @@ pub fn toggle_line_comments(doc: &Rope, selection: &Selection, token: Option<&st
 
         if !commented {
             // comment line
-            changes.push((pos, pos, Some(comment.clone())));
+            changes.push((pos, pos, Some(comment.clone())).into());
         } else {
             // uncomment line
-            changes.push((pos, pos + token.len() + margin, None));
+            changes.push((pos, pos + token.len() + margin, None).into());
         }
     }
 
