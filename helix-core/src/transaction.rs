@@ -1,8 +1,36 @@
 use crate::{Range, Rope, Selection, Tendril};
 use std::borrow::Cow;
 
-/// (from, to, replacement)
-pub type Change = (usize, usize, Option<Tendril>);
+pub struct Change {
+    pub from: usize,
+    pub to: usize,
+    pub replacement: Option<Tendril>,
+    pub range: Option<Range>,
+}
+
+impl From<(usize, usize, Option<Tendril>, Option<Range>)> for Change {
+    fn from(
+        (from, to, replacement, range): (usize, usize, Option<Tendril>, Option<Range>),
+    ) -> Self {
+        Change {
+            from,
+            to,
+            replacement,
+            range,
+        }
+    }
+}
+
+impl From<(usize, usize, Option<Tendril>)> for Change {
+    fn from((from, to, replacement): (usize, usize, Option<Tendril>)) -> Self {
+        Change {
+            from,
+            to,
+            replacement,
+            range: None,
+        }
+    }
+}
 
 // TODO: pub(crate)
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -467,9 +495,10 @@ impl Transaction {
     }
 
     /// Generate a transaction from a set of changes.
-    pub fn change<I>(doc: &Rope, changes: I) -> Self
+    pub fn change<I, C>(doc: &Rope, changes: I) -> Self
     where
-        I: Iterator<Item = Change>,
+        I: Iterator<Item = C>,
+        C: Into<Change>,
     {
         let len = doc.len_chars();
 
@@ -478,7 +507,11 @@ impl Transaction {
         let mut changeset = ChangeSet::with_capacity(2 * size + 1); // rough estimate
 
         let mut last = 0;
-        for (from, to, tendril) in changes {
+        for change in changes {
+            let change = change.into();
+            let from = change.from;
+            let to = change.to;
+
             // Verify ranges are ordered and not overlapping
             debug_assert!(last <= from);
             // Verify ranges are correct
@@ -490,7 +523,7 @@ impl Transaction {
             // Retain from last "to" to current "from"
             changeset.retain(from - last);
             let span = to - from;
-            match tendril {
+            match change.replacement {
                 Some(text) => {
                     changeset.insert(text);
                     changeset.delete(span);
@@ -506,9 +539,10 @@ impl Transaction {
     }
 
     /// Generate a transaction with a change per selection range.
-    pub fn change_by_selection<F>(doc: &Rope, selection: &Selection, f: F) -> Self
+    pub fn change_by_selection<F, C>(doc: &Rope, selection: &Selection, f: F) -> Self
     where
-        F: FnMut(&Range) -> Change,
+        F: FnMut(&Range) -> C,
+        C: Into<Change>,
     {
         Self::change(doc, selection.iter().map(f))
     }
