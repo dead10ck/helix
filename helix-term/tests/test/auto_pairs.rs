@@ -539,3 +539,17 @@ async fn append_inside_nested_pair_multi() -> anyhow::Result<()> {
 
     Ok(())
 }
+
+#[tokio::test(flavor = "multi_thread")]
+async fn delete_single() -> anyhow::Result<()> {
+    for (open, close) in DEFAULT_PAIRS {
+        test((
+            helpers::platform_line(&format!("{open}#[{close}|]#\n")),
+            "i<backspace>",
+            helpers::platform_line("#[\n|]#"),
+        ))
+        .await?;
+    }
+
+    Ok(())
+}

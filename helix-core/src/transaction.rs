@@ -490,6 +490,9 @@ impl Transaction {
         self
     }
 
+    /// Sets a new [`Selection`] on the resulting transaction. Note that
+    /// this will override any selection that is built up inside the changes
+    /// themselves.
     pub fn with_selection(mut self, selection: Selection) -> Self {
         self.selection = Some(selection);
         self
@@ -508,6 +511,8 @@ impl Transaction {
         let mut changeset = ChangeSet::with_capacity(2 * size + 1); // rough estimate
 
         let mut last = 0;
+        let mut offset = 0;
+
         for change in changes {
             let change = change.into();
             let from = change.from;
