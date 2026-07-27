@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-d5706b94.svg">
         <link rel="shortcut icon" href="favicon-cc1a8b51.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-2459343d.css">
-        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-5658e571.css">
+        <link rel="stylesheet" href="custom-10faeed5.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "colibri";
             const default_dark_theme = "colibri";
-            window.path_to_searchindex_js = "searchindex-5eddd67c.js";
+            window.path_to_searchindex_js = "searchindex-2fe1c435.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-887400e0.js"></script>
+        <script src="toc-c2fa7ea4.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -326,6 +326,7 @@ The key is a list of styles.</p>
 <h4 id="syntax-highlighting"><a class="header" href="#syntax-highlighting">Syntax highlighting</a></h4>
 <p>These keys match <a href="https://tree-sitter.github.io/tree-sitter/3-syntax-highlighting.html#highlights">tree-sitter scopes</a>.</p>
 <p>When determining styling for a highlight, the longest matching theme key will be used. For example, if the highlight is <code>function.builtin.static</code>, the key <code>function.builtin</code> will be used instead of <code>function</code>.</p>
+<p>This list is also the reference for the capture names used in <code>highlights.scm</code> queries (<code>@function</code>, <code>@type</code>, …) — see <a href="./guides/adding_languages.html">Adding languages</a>. When several captures cover the same text the <strong>last</strong> matching pattern in the file wins; when they sit on nested nodes the <strong>innermost</strong> node wins regardless of order, so capture the leaf you mean (put <code>@function</code> on the called identifier, not a node wrapping it). A method call is <code>@function.method</code>; a field access with no call is <code>@variable.other.member</code>.</p>
 <p>We use a similar set of scopes as
 <a href="https://www.sublimetext.com/docs/scope_naming.html">Sublime Text</a>. See also
 <a href="https://macromates.com/manual/en/language_grammars">TextMate</a> scopes.</p>
@@ -340,13 +341,13 @@ The key is a list of styles.</p>
 <li><code>parameter</code> - Generic type parameters (<code>T</code>)</li>
 <li><code>enum</code>
 <ul>
-<li><code>variant</code></li>
+<li><code>variant</code> - Enum variants</li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<p><code>constructor</code></p>
+<p><code>constructor</code> - Constructors, struct/record literals, type names in value position</p>
 </li>
 <li>
 <p><code>constant</code> (TODO: constant.other.placeholder for <code>%v</code>)</p>
@@ -461,15 +462,17 @@ The key is a list of styles.</p>
 <p><code>operator</code> - <code>||</code>, <code>+=</code>, <code>&gt;</code></p>
 </li>
 <li>
-<p><code>function</code></p>
+<p><code>function</code> - Function definitions and calls</p>
 <ul>
-<li><code>builtin</code></li>
-<li><code>method</code>
+<li><code>public</code> - Public function definitions</li>
+<li><code>builtin</code> - Language built-in functions</li>
+<li><code>method</code> - Method definitions and calls (<code>obj.method()</code>)
 <ul>
+<li><code>public</code> - Public method definitions</li>
 <li><code>private</code> - Private methods that use a unique syntax (currently just ECMAScript-based languages)</li>
 </ul>
 </li>
-<li><code>macro</code></li>
+<li><code>macro</code> - Macro invocations (e.g. <code>println!</code> in Rust)</li>
 <li><code>special</code> (preprocessor in C)</li>
 </ul>
 </li>
@@ -480,7 +483,7 @@ The key is a list of styles.</p>
 </ul>
 </li>
 <li>
-<p><code>namespace</code></p>
+<p><code>namespace</code> - Modules and namespaces (e.g. <code>std::collections</code>, package names)</p>
 </li>
 <li>
 <p><code>special</code> - <code>derive</code> in Rust, bolded query-match in pickers (includes file explorer), etc.
@@ -543,6 +546,9 @@ See also <a href="https://github.com/helix-editor/helix/issues/2380">#2380</a></
 </ul>
 </li>
 </ul>
+</li>
+<li>
+<p><code>embedded</code> - Interpolated expressions embedded in a string template (<code>${…}</code>)</p>
 </li>
 </ul>
 <h4 id="interface"><a class="header" href="#interface">Interface</a></h4>
@@ -640,9 +646,13 @@ See also <a href="https://github.com/helix-editor/helix/issues/2380">#2380</a></
 <tr><td><code>ui.cursorcolumn.primary</code></td><td>The column of the primary cursor (<a href="./configuration.html#editor-section">if cursorcolumn is enabled</a>)</td></tr>
 <tr><td><code>ui.cursorcolumn.secondary</code></td><td>The columns of any other cursors (<a href="./configuration.html#editor-section">if cursorcolumn is enabled</a>)</td></tr>
 <tr><td><code>warning</code></td><td>Diagnostics warning (gutter)</td></tr>
+<tr><td><code>warning.diagnostic.inline</code></td><td>The inline diagnostic for the warning severity</td></tr>
 <tr><td><code>error</code></td><td>Diagnostics error (gutter)</td></tr>
+<tr><td><code>error.diagnostic.inline</code></td><td>The inline diagnostic for the error severity</td></tr>
 <tr><td><code>info</code></td><td>Diagnostics info (gutter)</td></tr>
+<tr><td><code>info.diagnostic.inline</code></td><td>The inline diagnostic for the warning severity</td></tr>
 <tr><td><code>hint</code></td><td>Diagnostics hint (gutter)</td></tr>
+<tr><td><code>hint.diagnostic.inline</code></td><td>The inline diagnostic for the hint severity</td></tr>
 <tr><td><code>diagnostic</code></td><td>Diagnostics fallback style (editing area)</td></tr>
 <tr><td><code>diagnostic.hint</code></td><td>Diagnostics hint (editing area)</td></tr>
 <tr><td><code>diagnostic.info</code></td><td>Diagnostics info (editing area)</td></tr>
@@ -699,13 +709,16 @@ See also <a href="https://github.com/helix-editor/helix/issues/2380">#2380</a></
 
         <script src="elasticlunr-ef4e11c1.min.js"></script>
         <script src="mark-09e88c2c.min.js"></script>
-        <script src="searcher-c2a407aa.js"></script>
+        <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="ts-query-56018970.js"></script>
+        <script src="version-3313557a.js"></script>
+
+        <script src="book-c22b7243.js"></script>
 
 
 

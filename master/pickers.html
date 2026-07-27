@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-d5706b94.svg">
         <link rel="shortcut icon" href="favicon-cc1a8b51.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-2459343d.css">
-        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="custom-5658e571.css">
+        <link rel="stylesheet" href="custom-10faeed5.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "colibri";
             const default_dark_theme = "colibri";
-            window.path_to_searchindex_js = "searchindex-5eddd67c.js";
+            window.path_to_searchindex_js = "searchindex-2fe1c435.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-887400e0.js"></script>
+        <script src="toc-c2fa7ea4.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -188,6 +188,8 @@
 <p>Most pickers perform fuzzy matching using <a href="https://github.com/junegunn/fzf?tab=readme-ov-file#search-syntax">fzf syntax</a>. Two exceptions are the global search picker, which uses regex, and the workspace symbol picker, which passes search terms to the language server. Note that OR operations (<code>|</code>) are not currently supported.</p>
 <p>If a picker shows multiple columns, you may apply the filter to a specific column by prefixing the column name with <code>%</code>. Column names can be shortened to any prefix, so <code>%p</code>, <code>%pa</code> or <code>%pat</code> all mean the same as <code>%path</code>. For example, a query of <code>helix %p .toml !lang</code> in the global search picker searches for the term “helix” within files with paths ending in “.toml” but not including “lang”.</p>
 <p>You can insert the contents of a <a href="./registers.html">register</a> using <code>Ctrl-r</code> followed by a register name. For example, one could insert the currently selected text using <code>Ctrl-r</code>-<code>.</code>, or the directory of the current file using <code>Ctrl-r</code>-<code>%</code> followed by <code>Ctrl-w</code> to remove the last path section. The global search picker will use the contents of the <a href="./registers.html#default-registers">search register</a> if you press <code>Enter</code> without typing a filter. For example, pressing <code>*</code>-<code>Space-/</code>-<code>Enter</code> will start a global search for the currently selected text.</p>
+<h3 id="file-explorer"><a class="header" href="#file-explorer">File explorer</a></h3>
+<p><code>Space-e</code> opens an interactive file explorer for browsing and opening files, rooted at the workspace; <code>Space-.</code> opens one rooted at the current buffer’s directory. Unlike the file picker, the explorer does not ignore most files by default; its ignore behaviour is configured separately in the <a href="./editor.html#editorfile-explorer-section"><code>[editor.file-explorer]</code></a> section.</p>
 
                     </main>
 
@@ -233,13 +235,16 @@
 
         <script src="elasticlunr-ef4e11c1.min.js"></script>
         <script src="mark-09e88c2c.min.js"></script>
-        <script src="searcher-c2a407aa.js"></script>
+        <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="ts-query-56018970.js"></script>
+        <script src="version-3313557a.js"></script>
+
+        <script src="book-c22b7243.js"></script>
 
 
 

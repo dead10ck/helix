@@ -15,8 +15,8 @@
         <link rel="icon" href="../favicon-d5706b94.svg">
         <link rel="shortcut icon" href="../favicon-cc1a8b51.png">
         <link rel="stylesheet" href="../css/variables-8adf115d.css">
-        <link rel="stylesheet" href="../css/general-2459343d.css">
-        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/general-0392ca55.css">
+        <link rel="stylesheet" href="../css/chrome-fc474251.css">
         <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -28,7 +28,7 @@
         <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../custom-5658e571.css">
+        <link rel="stylesheet" href="../custom-10faeed5.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -36,10 +36,10 @@
             const path_to_root = "../";
             const default_light_theme = "colibri";
             const default_dark_theme = "colibri";
-            window.path_to_searchindex_js = "../searchindex-5eddd67c.js";
+            window.path_to_searchindex_js = "../searchindex-2fe1c435.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-887400e0.js"></script>
+        <script src="../toc-c2fa7ea4.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -186,12 +186,16 @@
 <p>Writing language injection queries allows one to highlight a specific node as a different language.
 In addition to the <a href="https://tree-sitter.github.io/tree-sitter/3-syntax-highlighting.html#language-injection">standard</a> language injection options used by tree-sitter, there
 are a few Helix specific extensions that allow for more control.</p>
+<p>Injection drives more than highlighting: within an injected region Helix also
+uses the injected language’s own indentation, textobjects, and comment tokens —
+so, for example, editing JavaScript inside an HTML <code>&lt;script&gt;</code> indents and
+comments as JavaScript.</p>
 <p>An example of a simple query that would highlight all strings as bash in Nix:</p>
 <pre><code class="language-scm">((string_expression (string_fragment) @injection.content)
   (#set! injection.language "bash"))
 </code></pre>
 <p>Another example is this query, which highlights links in comments and keywords like “TODO”, by reusing the dedicated “comment” language:</p>
-<pre><code>((comment) @injection.content
+<pre><code class="language-scm">((comment) @injection.content
   (#set! injection.language "comment"))
 </code></pre>
 <h2 id="capture-types"><a class="header" href="#capture-types">Capture Types</a></h2>
@@ -300,13 +304,16 @@ The first argument (a capture) must be one of the other arguments (strings).</p>
 
         <script src="../elasticlunr-ef4e11c1.min.js"></script>
         <script src="../mark-09e88c2c.min.js"></script>
-        <script src="../searcher-c2a407aa.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
 
         <script src="../clipboard-1626706a.min.js"></script>
         <script src="../highlight-abc7f01d.js"></script>
-        <script src="../book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
+        <script src="../ts-query-56018970.js"></script>
+        <script src="../version-3313557a.js"></script>
+
+        <script src="../book-c22b7243.js"></script>
 
 
 
